@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 function LoginForm({onSubmit, buttonText}) {
   function handleSubmit(event) {
     event.preventDefault()
