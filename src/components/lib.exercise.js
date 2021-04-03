@@ -21,7 +21,26 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 //   border: '0',
 //   lineHeight: '1',
 //   borderRadius: '3px',
+const buttonVariants = {
+  primary: {
+    background: '#3f51b5',
+    color: 'white',
+  },
+  secondary: {
+    background: '#f1f2f7',
+    color: '#434449',
+  },
+}
 
+const Button = styled.button`
+  padding: 10px 15px;
+  border: 0;
+  line-height: 1;
+  border-radius: 3px;
+  color: red;
+
+  ${({variant}) => buttonVariants[variant]}
+`
 // Button variant="primary" (in addition to the above styles)
 //   background: '#3f51b5',
 //   color: 'white',
@@ -35,10 +54,20 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 //   border: '1px solid #f1f1f4',
 //   background: '#f1f2f7',
 //   padding: '8px 12px',
+const Input = styled.input({
+  borderRadius: '3px',
+  border: '1px solid #f1f1f4',
+  background: '#f1f2f7',
+  padding: '8px 12px',
+})
 
 // FormGroup
 //   display: 'flex',
 //   flexDirection: 'column',
+const FormGroup = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 // 💰 I'm giving a few of these to you:
 const CircleButton = styled.button({
@@ -68,4 +97,4 @@ const Dialog = styled(ReachDialog)({
   },
 })
 
-export {CircleButton, Dialog}
+export {CircleButton, Button, Dialog, FormGroup, Input}
