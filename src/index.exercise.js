@@ -13,7 +13,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 // 🐨 you'll need to import some new components that you'll be creating
 // in this file
-import {Button, Input, FormGroup} from './components/lib'
+import {Button, Input, FormGroup, Spinner} from './components/lib'
 import {Modal, ModalContents, ModalOpenButton} from './components/modal'
 import {Logo} from './components/Logo'
 
@@ -45,8 +45,6 @@ function LoginForm({onSubmit, submitButton}) {
       }}
       onSubmit={handleSubmit}
     >
-      {/* 🐨 these div elements could be a FormGroup you create in components/lib */}
-      {/* 🐨 and the inputs elements could be custom styled Input components too */}
       <FormGroup>
         <label htmlFor="username">Username</label>
         <Input id="username" />
@@ -55,7 +53,9 @@ function LoginForm({onSubmit, submitButton}) {
         <label htmlFor="password">Password</label>
         <Input id="password" type="password" />
       </FormGroup>
-      <div>{React.cloneElement(submitButton, {type: 'submit'})}</div>
+      <div>
+        {React.cloneElement(submitButton, {type: 'submit'})} <Spinner />
+      </div>
     </form>
   )
 }
