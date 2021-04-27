@@ -9,7 +9,7 @@ import './bootstrap'
 import {BookRow} from './components/book-row'
 import {BookListUL, Input, Spinner} from './components/lib'
 
-// 🐨 import the client from './utils/api-client'
+import {client} from './utils/api-client'
 
 function DiscoverBooksScreen() {
   const [status, setStatus] = React.useState('idle')
@@ -26,17 +26,10 @@ function DiscoverBooksScreen() {
     }
 
     setStatus('loading')
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_URL}/books?query=${encodeURIComponent(
-          query,
-        )}`,
-      )
-      .then(res => res.json())
-      .then(resData => {
-        setData(resData)
-        setStatus(`success`)
-      })
+    client(`books?query=${encodeURIComponent(query)}`).then(res => {
+      setData(res)
+      setStatus('success')
+    })
   }, [query, queried])
 
   /**
