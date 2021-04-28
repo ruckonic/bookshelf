@@ -25,7 +25,12 @@ async function client(endpoint, customConfig = {}) {
       `${process.env.REACT_APP_API_URL}/${endpoint}`,
       config,
     )
-    return await response.json()
+    const data = await response.json()
+    if (!response.ok) {
+      return Promise.reject(data)
+    }
+
+    return data
   } catch (err) {
     throw new Error(err.message)
   }

@@ -3,11 +3,12 @@ import {jsx} from '@emotion/core'
 
 import React from 'react'
 import Tooltip from '@reach/tooltip'
-import {FaSearch} from 'react-icons/fa'
+import {FaSearch, FaTimes} from 'react-icons/fa'
 
 import './bootstrap'
 import {BookRow} from './components/book-row'
 import {BookListUL, Input, Spinner} from './components/lib'
+import * as colors from './styles/colors'
 
 import {client} from './utils/api-client'
 
@@ -16,9 +17,11 @@ function DiscoverBooksScreen() {
   const [query, setQuery] = React.useState()
   const [queried, setQueried] = React.useState(false)
   const [data, setData] = React.useState(null)
+  const [error, setError] = React.useState(null)
 
   const isLoading = status === 'loading'
   const isSuccess = status === 'success'
+  const isError = status === 'error'
 
   React.useEffect(() => {
     if (!queried) {
@@ -26,10 +29,15 @@ function DiscoverBooksScreen() {
     }
 
     setStatus('loading')
-    client(`books?query=${encodeURIComponent(query)}`).then(res => {
-      setData(res)
-      setStatus('success')
-    })
+    client(`books?query=${encodeURIComponent(query)}`)
+      .then(res => {
+        setData(res)
+        setStatus('success')
+      })
+      .catch(err => {
+        setError(err)
+        setStatus('error')
+      })
   }, [query, queried])
 
   /**
@@ -63,12 +71,23 @@ function DiscoverBooksScreen() {
                 background: 'transparent',
               }}
             >
-              {isLoading ? <Spinner /> : <FaSearch aria-label="search" />}
+              {isLoading ? (
+                <Spinner />
+              ) : isError ? (
+                <FaTimes aria-label="Error" css={{color: colors.danger}} />
+              ) : (
+                <FaSearch aria-label="search" />
+              )}
             </button>
           </label>
         </Tooltip>
       </form>
-
+      {isError && (
+        <div css={{color: colors.danger}}>
+          <p>There was an error</p>
+          <pre>{error.message}</pre>
+        </div>
+      )}
       {isSuccess ? (
         data?.books?.length ? (
           <BookListUL css={{marginTop: 20}}>
