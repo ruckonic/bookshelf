@@ -11,34 +11,21 @@ import {BookListUL, Input, Spinner} from './components/lib'
 import * as colors from './styles/colors'
 
 import {client} from './utils/api-client'
+import {useAsync} from './utils/hooks'
 
 function DiscoverBooksScreen() {
-  const [status, setStatus] = React.useState('idle')
   const [query, setQuery] = React.useState()
   const [queried, setQueried] = React.useState(false)
-  const [data, setData] = React.useState(null)
-  const [error, setError] = React.useState(null)
 
-  const isLoading = status === 'loading'
-  const isSuccess = status === 'success'
-  const isError = status === 'error'
+  const {data, error, isLoading, isSuccess, isError, run} = useAsync()
 
   React.useEffect(() => {
     if (!queried) {
       return
     }
 
-    setStatus('loading')
-    client(`books?query=${encodeURIComponent(query)}`)
-      .then(res => {
-        setData(res)
-        setStatus('success')
-      })
-      .catch(err => {
-        setError(err)
-        setStatus('error')
-      })
-  }, [query, queried])
+    run(client(`books?query=${encodeURIComponent(query)}`))
+  }, [queried, query, run])
 
   /**
    *
